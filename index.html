@@ -1,16 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./client/styles.css">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE-edge"> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./client/scss/application.css" />
     <script src="dist/bundle.js" defer></script>
-    <title>Scratch Project</title> 
-</head>
-<body>
-    <!-- set a id of root to later acess from App.js-->
+    <title>Scratch Project</title>
+    <!-- I think I need a link here <link rel="background" href=""> -->
+  </head>
+  <body>
+    <section>
+      <header class="titleheader">
+        <h1 class="title">Howdy group</h1>
+      </header>
+    </section>
     <div id="root"></div>
     <!-- run the bundle.js script-->
     <script src="/build/bundle.js"></script>
-</body>
+  </body>
 </html>
+}
