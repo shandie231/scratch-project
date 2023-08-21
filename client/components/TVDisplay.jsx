@@ -8,14 +8,13 @@ const TVDisplay = () => {
   const recommendations = useSelector(state => state.shows.shows)
   return (
     <div className="display">
-   
+      Top Recommendations:
       {/* spread the recommendations array, and createas a prop called show for each child component
       and assigning show prop the value of element element (that is an object matching input criteria) and gives unique key
       */}
       {recommendations.map(element => (
         <Recommendation key={element.id} show = {element}/>
       ))}
-      TVDisplay
       </div>
   )
 }

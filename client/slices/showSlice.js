@@ -2,32 +2,98 @@
 // createSlice will reduce the amount of boilerplate code
 // allows us to have action types, action creators, and reducers all in one
 // action types will be something the toolkit does under the hood
-import { createAsyncThunk, } from '@reduxjs/toolkit'
-import { userAPI } from './userApi' //this will change
+import { createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 
-//export const searchTV = createAsyncThunk('shows/searchTV', async ())
+export const searchTV = createAsyncThunk(
+  'shows/searchTV',
+  async (searchCriteria, { rejectWithValue }) => {
+    try {
+      const response = await fetch('http://localhost:3000/TVShow', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(searchCriteria),
+      });
 
+      if (!response.ok) {
+        throw new Error('Failed to fetch.');
+      }
 
-
-const fetchTvShow = createAsyncThunk(
-  'users/fetchByIdStatus', //This will change when we know our routes
-  async(movie: movie,  thunkAPI) => {
-      const response = await userAPI.fetchByIdStatus(movie)
-      return response.data
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
+  }
+);
 
+export const addFavorite = createAsyncThunk(
+  'shows/addFavorite',
+  async (favoriteObj, { rejectWithValue }) => {
+    try {
+      const response = await fetch('http://localhost:3000/Favorite/Add', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(favoriteObj),
+      });
 
-)
+      if (!response.ok) {
+        throw new Error('Failed to fetch.');
+      }
 
-interface UserState {
-  entities: []
-  loading: 'idle' | 'pending' | 'succeeded' | 'failed'
-}
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
-const initialState = {
-  entities: [],
-  loading: 'idle',
-} as UserState
+export const displaysFavorites = createAsyncThunk(
+  'shows/displaysFavorites',
+  async () => {
+    try {
+      const response = await fetch('http://localhost:3000/Favorite', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch.');
+      }
+
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const deleteFavorite = createAsyncThunk(
+  'deleteFavorite',
+  async (searchCriteria, { rejectWithValue }) => {
+    try {
+      const response = await fetch('http://localhost:3000/Favorite/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(searchCriteria),
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch.');
+      }
+
+      return await response.json();
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
 
 
 
@@ -36,53 +102,66 @@ const showSlice = createSlice({
   //will be empty - populated for testing purposes
   //initial state on app startup
   initialState: {
-    shows: [
-      // pass in id, title, genre, runtime, and rating to simulate actual data
-      {
-        id: 1,
-        title: "Breaking Bad",
-        genre: "Drama",
-        runtime: 5,
-        rating: 9.5
-      },
-      {
-        id: 2,
-        title: "Game of Thrones",
-        genre: "Drama",
-        runtime: 8,
-        rating: 9.4
-      },
-      {
-        id: 3,
-        title: "Friends",
-        genre: "Drama",
-        runtime: 5,
-        rating: 9.5
-      },
-    ]
+    shows: [],
+    loading: false,
+    error: null,
   },
-  //list of reducers 
-  reducers: {
-    //searchTV takes in state and action - action.payload is the new submission object
-    searchTV: (state, action) => {
-      //criteria will be the action payload
-      const criteria = action.payload
-      //set 
-      const allShows = [...state.shows];
-      console.log('allShows: ', JSON.parse(JSON.stringify(allShows)));
-      // filter the shows by genre, runtime and rating matching the criteria (action.payload) values 
-      const matchingShows = allShows.filter(show => {
-        return show.genre === criteria.genre &&
-               show.runtime === criteria.runtime &&
-               show.rating === criteria.rating
+  reducers: {},
+  // extraReducers is a separate object for async reducers (builder is boilerplate, then we have addCases instead of switch cases)
+  extraReducers: (builder) => {
+    builder
+      .addCase(searchTV.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(searchTV.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log(action)
+        console.log(action.payload)
+        state.shows = action.payload; // Assuming the backend returns an array of shows
+      })
+      .addCase(searchTV.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(addFavorite.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(addFavorite.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log('hi')// Assuming the backend returns an array of shows
+      })
+      .addCase(addFavorite.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(displaysFavorites.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(displaysFavorites.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log(action.payload)
+        state.shows = action.payload// Assuming the backend returns an array of shows
+      })
+      .addCase(displaysFavorites.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(deleteFavorite.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteFavorite.fulfilled, (state, action) => {
+        state.loading = false;
+        console.log('hi')// Assuming the backend returns an array of shows
+      })
+      .addCase(deleteFavorite.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       });
-      
-      console.log('Matching Shows: ', matchingShows)
-      // reassigning the shows array in our state to be an updated array with only objects that match the criterias
-      state.shows = matchingShows;
-    }
-  }
-})
+  },
+});
 
-export const { searchTV } = showSlice.actions
 export default showSlice.reducer;
