@@ -2,14 +2,15 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 // importing searchTV action
 import { searchTV } from '../slices/showSlice'
+import { deleteFavorite } from '../slices/showSlice'
+
 
 // initializing state for every property to be updated with the values we input 
 const Input = () => {
   const [genreInput, setGenreInput] = useState('');
-  const [adultInput, setAdultInput] = useState('');
   const [runtimeInput, setRuntimeInput] = useState('');
-  const [payInput, setPayInput] = useState('');
   const [ratingInput, setRatingInput] = useState('');
+  const [originInput , setOriginInput] = useState('');
   // need to assign useDispatch a constant 
   const dispatch = useDispatch()
 
@@ -19,7 +20,8 @@ const Input = () => {
     const newSubmission = {
       genre: genreInput,
       runtime: +runtimeInput,
-      rating: +ratingInput
+      rating: +ratingInput,
+      origin: originInput,
     };
     
     // invoking dispatch, passing in searchTV(action), passing in newSubmission(payload)
@@ -32,10 +34,11 @@ const Input = () => {
     <div className="input">
       <form onSubmit={onSubmit}>
         <input type='text' placeholder="Enter genre" value={genreInput} onChange = {(e) => setGenreInput(e.target.value)}/>
-        
-        <input type='number' placeholder="How many number of seasons?" value={runtimeInput} onChange = {(e) => setRuntimeInput(e.target.value)}/>
+        <input type='number' placeholder="Max Episode Length" value={runtimeInput} onChange = {(e) => setRuntimeInput(e.target.value)}/>
         <input type='number' placeholder="Rating required?" value={ratingInput} onChange = {(e) => setRatingInput(e.target.value)}/>
+        <input type='string' placeholder="Origin Country" value={originInput} onChange={(e) => setOriginInput(e.target.value)}/>
         <button> Submit </button>
+
       </form>
     </div>
   )
