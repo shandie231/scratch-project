@@ -19,6 +19,7 @@ favoriteController.addFavorite = async (req, res, next) => {
     overview: overview,
     poster_path: poster_path
   });
+
   res.locals.addFav = favorites;
   await favorites.save();
   return next();  
@@ -47,12 +48,13 @@ favoriteController.getFavorite = async (req, res, next) => {
 
 favoriteController.deleteFavorite = async (req, res, next) => {
   try{
-    const { name } = req.body;
-    const deletedFav = await deleteOne({name: name});
-
-    res.locals.deleteFav = deleteFav;
+    const { id } = req.params;
+    const deleteShow = await Favorite.findById(id);
+    if (!deleteShow) {
+      return res.status(404).json({error: 'Show not found'})
+    }
+    await Favorite.deleteOne({_id: id});
     return next();
-
   }catch{
     return next({
       log: 'There was a problem in favoriteController.deleteFavorite',
