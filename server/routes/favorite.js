@@ -10,8 +10,8 @@ router.post('/Add', favoriteController.addFavorite, (req, res) => {
   return res.status(200).json(res.locals.newFav)
 });
 
-router.post('/delete', favoriteController.deleteFavorite, (req, res) => {
-  return res.status(200).json(res.locals.deleteFav);
+router.delete('/:id', favoriteController.deleteFavorite, favoriteController.getFavorite, (req, res) => {
+  return res.status(200).json(res.locals.favorites);
 })
 
 module.exports = router;

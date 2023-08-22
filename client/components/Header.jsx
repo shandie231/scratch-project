@@ -15,22 +15,15 @@ const Header = () => {
     dispatch(displaysFavorites());
   }
 
-  const deleteFavorite = () => {
-    const favorite = {
-      name: show.name,
-    }
-    dispatch(deleteFavorite(favorite))
-  }
 
   return (
     <div className="title">
       <div><h1>What's Your Favorite Show?</h1></div>
         <div>
         <form onSubmit={onSubmit}>
-          <button> Favorites </button>
+          <button id="favoritesButton"> Favorites </button>
         </form>
         </div>
-      <button onClick={deleteFavorite}>Delete</button>
     </div>
   )
 }

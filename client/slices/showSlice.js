@@ -74,14 +74,13 @@ export const displaysFavorites = createAsyncThunk(
 
 export const deleteFavorite = createAsyncThunk(
   'deleteFavorite',
-  async (searchCriteria, { rejectWithValue }) => {
+  async (id, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:3000/Favorite/delete', {
-        method: 'POST',
+      const response = await fetch(`http://localhost:3000/Favorite/${id}`, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(searchCriteria),
       });
       
       if (!response.ok) {
@@ -105,6 +104,8 @@ const showSlice = createSlice({
     shows: [],
     loading: false,
     error: null,
+    showAddButton: true,
+    showDeleteButton: false
   },
   reducers: {},
   // extraReducers is a separate object for async reducers (builder is boilerplate, then we have addCases instead of switch cases)
@@ -119,6 +120,8 @@ const showSlice = createSlice({
         console.log(action)
         console.log(action.payload)
         state.shows = action.payload; // Assuming the backend returns an array of shows
+        state.showAddButton = true,
+        state.showDeleteButton = false
       })
       .addCase(searchTV.rejected, (state, action) => {
         state.loading = false;
@@ -143,7 +146,9 @@ const showSlice = createSlice({
       .addCase(displaysFavorites.fulfilled, (state, action) => {
         state.loading = false;
         console.log(action.payload)
-        state.shows = action.payload// Assuming the backend returns an array of shows
+        state.shows = action.payload,// Assuming the backend returns an array of shows
+        state.showAddButton = false,
+        state.showDeleteButton = true
       })
       .addCase(displaysFavorites.rejected, (state, action) => {
         state.loading = false;
@@ -155,7 +160,7 @@ const showSlice = createSlice({
       })
       .addCase(deleteFavorite.fulfilled, (state, action) => {
         state.loading = false;
-        console.log('hi')// Assuming the backend returns an array of shows
+        state.shows = action.payload// Assuming the backend returns an array of shows
       })
       .addCase(deleteFavorite.rejected, (state, action) => {
         state.loading = false;

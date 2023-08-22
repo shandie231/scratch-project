@@ -13,7 +13,7 @@ const TVDisplay = () => {
       and assigning show prop the value of element element (that is an object matching input criteria) and gives unique key
       */}
       {recommendations.map(element => (
-        <Recommendation key={element.id} show = {element}/>
+        <Recommendation key={element._id} show = {element}/>
       ))}
       </div>
   )

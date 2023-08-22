@@ -17,11 +17,17 @@ body {
   background-color: rgb(247, 243, 221);
 }
 
-/* #button {
-  display: block;
-  padding: 5px;
-  margin-top: 10px;
-} */
+#favoritesButton {
+  color:rgb(182, 137, 178);
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+
+#submitButton {
+  color:rgb(182, 137, 178);
+  border: 1px solid gray;
+  border-radius: 5px;
+}
 
 .welcome {
   height: 50px;

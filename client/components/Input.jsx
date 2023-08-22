@@ -35,9 +35,9 @@ const Input = () => {
       <form onSubmit={onSubmit}>
         <input type='text' placeholder="Enter genre" value={genreInput} onChange = {(e) => setGenreInput(e.target.value)}/>
         <input type='number' placeholder="Max Episode Length" value={runtimeInput} onChange = {(e) => setRuntimeInput(e.target.value)}/>
-        <input type='number' placeholder="Rating required?" value={ratingInput} onChange = {(e) => setRatingInput(e.target.value)}/>
+        <input type='number' placeholder="Rating Required" value={ratingInput} onChange = {(e) => setRatingInput(e.target.value)}/>
         <input type='string' placeholder="Origin Country" value={originInput} onChange={(e) => setOriginInput(e.target.value)}/>
-        <button> Submit </button>
+        <button id="submitButton"> Submit </button>
 
       </form>
     </div>
