@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 //mongoose
 //mongoose
+//webpack
 const connectDB = () => {
   const connectionString = 'mongodb+srv://jas0430:Wr5kilCG1o2EQmSe@wpt-42.yjrdn5e.mongodb.net/?retryWrites=true&w=majority';
 
